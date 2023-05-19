@@ -89,6 +89,7 @@
       })
       .catch(error => {
         error;
+        return undefined;
       });
   };
   
