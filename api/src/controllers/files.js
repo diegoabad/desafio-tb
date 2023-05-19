@@ -4,14 +4,14 @@ const getAllFiles = async (req, res) => {
   try {
     const { fileName } = req.query;
     let result;
-
     if (!fileName || fileName === "undefined") {
       result = await getFiles();
     } else {
       result = await getOneFile(fileName);
     }
-
-    res.status(200).send(result);
+    
+    if(!result)  res.status(200).send({data:[],status:"EMPTY"});
+    res.status(200).send({data:result,status:"OK"});
   } catch (err) {
     res.status(500).send("Problema en el servidor")
     console.log(err);

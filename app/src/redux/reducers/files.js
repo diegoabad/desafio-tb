@@ -1,16 +1,20 @@
 import { GET_ALL_FILES,GET_FILE_LIST } from "../actions/files";
 
 const initialState = {
-  files: [],
+  files: {
+    data: [],
+    status:""
+  },
   list:[]
 };
 
 const files = (state = initialState, action) => {
   switch (action.type) {
     case `${GET_ALL_FILES}`:
+
       return {
         ...state,
-        files: action.payload
+        files:{...action.payload}
       };
       case `${GET_FILE_LIST}`:
       return {

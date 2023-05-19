@@ -1,9 +1,9 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 import Loading from "./Loading";
-
+import { Container } from 'react-bootstrap';
 const TableData = ({ files }) =>
-  files.length ? (
+  files.data.length && files.status !== "EMPTY"? (
     <Table striped bordered>
       <thead style={{ borderBottom: "2px solid black" }}>
         <tr>
@@ -14,7 +14,7 @@ const TableData = ({ files }) =>
         </tr>
       </thead>
       <tbody>
-        {files.map((item, index) =>
+        {files.data.map((item, index) =>
           item.lines.map((line, lineIndex) => (
             <tr key={`${index}-${lineIndex}`}>
               <td className="text-center">{item.file}</td>
@@ -27,7 +27,10 @@ const TableData = ({ files }) =>
       </tbody>
     </Table>
   ) : (
-    <Loading />
+    files.status !== "EMPTY" ?
+    <Loading /> :  <Container className="text-center">
+    <strong style={{ color: 'black' }}>NO SE ENCONTRO NINGUN ARCHIVO...</strong>
+  </Container>
   );
 
 export default TableData;

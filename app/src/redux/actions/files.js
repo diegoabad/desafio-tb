@@ -9,11 +9,12 @@ export const getAllFiles = (fileName) => {
       axios
         .get(`http://localhost:8080/files/data?fileName=${fileName}`)
         .then((response) => {
-      
-          dispatch({
-            type: GET_ALL_FILES,
-            payload: response.data,
-          });
+          
+            dispatch({
+              type: GET_ALL_FILES,
+              payload: {...response.data},
+            });
+         
         })
         .catch((error) => {
           Promise.reject(error);
@@ -24,7 +25,7 @@ export const getAllFiles = (fileName) => {
   };
 };
 
-export const getFileList = (fileName) => {
+export const getFileList = () => {
   return (dispatch) => {
     try {
       axios
