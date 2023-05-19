@@ -39,55 +39,62 @@
     })
   }
   
-  const getFiles = (fileName) => {
+  const fetchFiles = () => {
     return callApi("https://echo-serv.tbxnet.com/v1/secret/files")
       .then(response => {
-        const data = response.data;    
+        const data = response.data;
         const files = data.files;
-        const filePromises = files.map(file => {
-          const url = `https://echo-serv.tbxnet.com/v1/secret/file/${file}`
-          return callApi(url)
-            .then(response => {
-    
-              if (response.status === 200) {
-                return response.data;
-              }
-
-              return undefined;
-            })
-            .then(text => {
-      
-              if (text) {
-                const resultado = resolucion(text,file);
-                if (resultado.lines.length > 0) {
-                  return resultado;
-                }
-              }
-            })
-            .catch(error => {
-              error
-            });
-        });
+        return files;
+      })
+      .catch(error => {
+        error;
+      });
+  };
   
-       
+  const fetchFileData = (file) => {
+    const url = `https://echo-serv.tbxnet.com/v1/secret/file/${file}`;
+    return callApi(url)
+      .then(response => {
+        if (response.status === 200) {
+          return response.data;
+        }
+        return undefined;
+      })
+      .catch(error => {
+        error;
+      });
+  };
+  
+  const processFileData = (fileData, file) => {
+    if (fileData) {
+      const resultado = resolucion(fileData, file);
+      if (resultado.lines.length > 0) {
+        return resultado;
+      }
+    }
+  };
+  
+  const getFiles = () => {
+    return fetchFiles()
+      .then(files => {
+        const filePromises = files.map(file => fetchFileData(file)
+          .then(fileData => processFileData(fileData, file))
+        );
         return Promise.allSettled(filePromises);
       })
       .then(results => {
-  
         const successfulPromises = results.filter(result => result.status === 'fulfilled' && result.value !== undefined);
-  
-      
         const successfulResponses = successfulPromises.map(result => result.value);
-  
-    
-        const jsonArray = successfulResponses;
-  
-        return jsonArray;
+        return successfulResponses;
       })
       .catch(error => {
-        error
+        error;
       });
   };
+  
+  
+
+
   
   module.exports = { getFiles,callApi };
   
