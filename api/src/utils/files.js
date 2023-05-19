@@ -92,9 +92,24 @@
       });
   };
   
+
+  const getOneFile = (fileName) => {
+    return fetchFileData(fileName)
+      .then(fileData => processFileData(fileData, fileName))
+      .then(result => {
+        if (result) {
+          return [result];
+        }
+        throw new Error('Empty result');
+      })
+      .catch(error => {
+        error;
+      });
+  };
+  
+  
   
 
-
   
-  module.exports = { getFiles,callApi };
+  module.exports = { getFiles,callApi,getOneFile };
   

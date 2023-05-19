@@ -1,11 +1,23 @@
-const {getFiles,callApi} = require('../utils/files');
+const {getFiles,callApi,getOneFile} = require('../utils/files');
 
-const getAllFiles =  (req, res) => {
-  try{
-    const {fileName} = req.query
-    getFiles(fileName).then(files=> res.send(files))
-  }catch(err){console.log(err)}
+const getAllFiles = async (req, res) => {
+  try {
+    const { fileName } = req.query;
+    let result;
+
+    if (!fileName || fileName === "undefined") {
+      result = await getFiles();
+    } else {
+      result = await getOneFile(fileName);
+    }
+
+    res.status(200).send(result);
+  } catch (err) {
+    res.status(500).send("Problema en el servidor")
+    console.log(err);
+  }
 };
+
 
 const getFilesList =  (req, res) => {
   try{
