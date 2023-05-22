@@ -1,6 +1,6 @@
 # Desafío - TB
 
-![Front Desafio TB](https://drive.google.com/file/d/1QkqLsyAwHucoXgdzr3hseFg-28sm42MJ/view?usp=sharing)
+![Front Desafio TB](https://github.com/diegoabad/desafio-tb/blob/main/Desafio-TB.PNG)
 
 ## Instalación
 
